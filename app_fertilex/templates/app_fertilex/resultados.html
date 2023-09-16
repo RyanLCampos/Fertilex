@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Previsões</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Lista de Previsões</h1>
+    </header>
+    <div class="container mt-5">
+        <h2>Previsões do Usuário</h2>
+        <ul>
+            {% for previsao in previsoes %}
+            <li>
+                <a href="{% url 'app_fertilex:prever_atualizar' previsao.id %}" class="btn btn-info">Visualizar/Editar</a>
+                <a href="{% url 'app_fertilex:excluir_previsao' previsao_id=previsao.id %}" class="btn btn-danger">Excluir</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'app_fertilex:prever_nova' %}" class="btn btn-primary m-3">Criar Nova Previsão</a>
+  
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    </script>
+</body>
+</html>

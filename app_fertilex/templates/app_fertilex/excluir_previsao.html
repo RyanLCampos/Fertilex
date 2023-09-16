@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Exclusão de Previsão</title>
+    <!-- Inclua os arquivos CSS e JS do Bootstrap ou de sua escolha -->
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Confirmar Exclusão da Previsão {{ previsao.id }}</h1>
+    </header>
+    <div class="container mt-5">
+        <p>Você tem certeza de que deseja excluir esta previsão?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sim, Excluir</button>
+            <a href="{% url 'app_fertilex:resultados' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

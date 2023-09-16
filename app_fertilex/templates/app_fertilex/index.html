@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fazer Previsão</title>
+</head>
+<body>
+    <h1>Fazer Previsão</h1>
+
+    <form method="post" action="{% url 'prever' %}">
+        {% csrf_token %}
+        <label for="id_feature_1">Feature 1:</label>
+        {{ form.feature_1 }}
+        <br>
+        <label for="id_feature_2">Feature 2:</label>
+        {{ form.feature_2 }}
+        <br>
+        <input type="submit" value="Fazer Previsão">
+    </form>
+
+    {% if resultado %}
+    <h2>Resultado da Previsão:</h2>
+    <p>O resultado da previsão é: {{ resultado }}</p>
+    {% endif %}
+</body>
+</html>
