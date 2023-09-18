@@ -22,5 +22,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_fertilex.urls')),
-    path('a/', include('Users.urls')),
+    path('', include('Users.urls')),
 ]

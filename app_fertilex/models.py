@@ -6,8 +6,10 @@ User = get_user_model()
 
 # Create your models here.
 class Previsao(models.Model):
+    id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=100, default="1")
     data_criacao = models.DateTimeField(default=timezone.now)
     dados_tabela = models.JSONField(default=list)
     resultados = models.JSONField(default=list)
+    num_linhas = models.IntegerField(default=0)
