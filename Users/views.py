@@ -13,7 +13,7 @@ def cadastrar(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Cadastro realizado com sucesso!')
-            return redirect('app_fertilex:resultados')  # Redirecionar para a página de análises
+            return redirect('app_fertilex:resultados')
     else:
         form = UserCreationForm()
     return render(request, 'Users/cadastrar.html', {'form': form})
