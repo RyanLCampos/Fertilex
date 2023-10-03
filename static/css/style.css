@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html {
+    min-height: 100%;
+    min-width: 100%;
+}
+body {
+    
+    background: rgb(9,121,61);
+    background: linear-gradient(170deg, rgba(9,121,61,1) 10%, rgba(38,145,76,1) 37%, rgba(95,193,105,1) 62%, rgba(145,255,0,1) 100%);
+    
+}
+
+h1 {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    color: azure;
+    font-size: 45px;
+    text-align: center;
+    margin-top: 3%;
+}
+
+h2 {
+    font-family: 'Work Sans', sans-serif;
+    text-align: center;
+    font-size: 30px;
+    color: #09793d;
+}
+
+label {
+    font-family: 'Work Sans', sans-serif;
+}
+
+.area-login{
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background-color: #f8f9fa;
+    
+    margin-top: 20px;
+    width: 440px;
+    height: 440px;
+    padding: 35px;
+
+    border-radius: 20px;
+}
+
+
+.card form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    width: 100%;
+}
+
+
+.card input {
+   width: 100%;
+   border: 3px solid #dee2e6;
+   border-radius: 20px;
+   margin-top: 5px;
+   padding-top: 5px;
+   padding-left: 10px;
+
+   outline: none;
+   font-size: 14px;
+   color: #343a40;
+
+   background-color: #f8f9fa;
+}
+
+.card input:focus{
+    transition: ease-in .3s;
+    border: 3px solid #09793daf;
+}
+
+label {
+    color: #09793d;
+    font-weight: 500;
+}
+
+.card .form-input{
+    margin-bottom: 20px;
+}
+
+.card button {
+    width: 50%;
+    background-color: #09793d;
+    border-radius: 20px;
+    padding: 5px;
+    border: 2px solid #09793d;
+    
+    color: #f2f3f3;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Work Sans', sans-serif;
+}
+
+
+.card .form-input-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.card .cadastro-login {
+    margin-top: 30px;
+    text-align: center;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.card .cadastro-login a {
+    color: #5fc169;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+
+.card .cadastro-login a:hover {
+    transition: ease .2s;
+    color: #2b955c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card button:hover{
+    transition: ease-in .2s;
+    background-color: transparent;
+    color: #09793d;
+    cursor: pointer;
+    border: 2px solid #09793d;
+}
+
+.errorlist {
+    position: absolute;
+    background-color: white;
+    border-radius: 20px;
+    top: 50%;
+    left: 50%;
+}

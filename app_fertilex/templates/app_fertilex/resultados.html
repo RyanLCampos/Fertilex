@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,74 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Previsões</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .btn-list {
-            margin: 20px 0;
-        }
-
-        .btn-action {
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'resultados/style2.css' %}">
 </head>
 <body>
-    <header class="header">
-        <h1>Lista de Previsões</h1>
+    <header>
+        <div class="perfil">
+            <a href="#" class="btn-perfil">Perfil</a>
+        </div>
+        <div class="titulo-fertilex">
+            <h1>Fertilex</h1>
+        </div>
+        <div class="div-logout">
+            <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
+        </div>
     </header>
     <div class="container mt-4">
-        <div class="title mb-4">
-            <h2>Previsões do Usuário</h2>
-        </div>
         <div class="row">
             <div class="col-md-12">
-                <ul class="list-group">
-                    {% for previsao in previsoes %}
-                    <li class="list-group-item mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>{{ previsao.titulo }}</span>
-                            <div>
-                                <a href="{% url 'app_fertilex:prever_atualizar' previsao.id %}" class="btn btn-success btn-action">Visualizar/Editar</a>
-                                <a href="{% url 'app_fertilex:excluir_previsao' previsao.id %}" class="btn btn-danger btn-action">Excluir</a>
-                            </div>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
+                <form action="{% url 'app_fertilex:pesquisar_previsao' %}" method="get" id="searchForm">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="search" class="form-control rounded" name="p" placeholder="Search" aria-label="Search" aria-describedby="search-addon" oninput="filterResults()" value="{{ request.GET.p }}">
+                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                    </div>
+                </form>
+                
+                {% if previsoes %}
+                    <ul class="list-group" id="searchResults">
+                        {% for previsao in previsoes %}
+                            <li class="lista-previsoes">
+                                <div class="item-lista">
+                                    <div class="titulo-resultado">
+                                        <span>{{ previsao.titulo }}</span>
+                                    </div>
+                                    <div class="botoes">
+                                        <a href="{% url 'app_fertilex:prever_atualizar' previsao.id %}" class="btn-atualizar">Visualizar/Editar</a>
+                                        <a href="{% url 'app_fertilex:excluir_previsao' previsao.id %}" class="btn-excluir">Excluir</a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="nao-encontrado">Nenhuma previsão encontrada.</p>
+                {% endif %}
             </div>
         </div>
-        <div class="btn-list">
-            <a href="{% url 'app_fertilex:prever_nova' %}" class="btn btn-primary">Criar Nova Previsão</a>
-            <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+        <div class="btn-">
+            <a href="{% url 'app_fertilex:prever_nova' %}" class="btn btn-primary">Criar Nova Predição</a>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        var previsoes = JSON.parse('{{ previsoes_json|escapejs }}');
+        
         function openConfirmationModal(previsaoId) {
             var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
             modal.show();
+        }
+
+        function filterResults() {
+            var searchTerm = document.querySelector("input[name='p']").value.toLowerCase().trim();
+            var resultsContainer = document.getElementById("searchResults");
+            var resultsHTML = "";
+            var encontrouResultado = false;
+
+            '{% for previsao in previsoes %}'
+                var titulo = "{{ previsao.titulo }}".toLowerCase();
+
+                if (titulo.includes(searchTerm)) {
+                    encontrouResultado = true;
+                    resultsHTML += `
+                        <li class="lista-previsoes">
+                            <div class="item-lista">
+                                <div class="titulo-resultado">
+                                    <span>{{ previsao.titulo }}</span>
+                                </div>
+                                <div>
+                                    <a href="{% url 'app_fertilex:prever_atualizar' previsao.id %}" class="btn-atualizar">Visualizar/Editar</a>
+                                    <a href="{% url 'app_fertilex:excluir_previsao' previsao.id %}" class="btn-excluir">Excluir</a>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                }
+            '{% endfor %}'
+
+            if (!encontrouResultado) {
+               
+                resultsHTML += `
+                    
+                    <p class="nao-encontrado">Nenhuma previsão encontrada</p>
+                        
+                `;
+            }
+
+            // Atualizar os resultados no HTML
+            resultsContainer.innerHTML = resultsHTML;
         }
     </script>
 </body>

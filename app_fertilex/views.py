@@ -1,5 +1,6 @@
 import pickle
 import os
+import locale
 import numpy as np
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import DadosForm
@@ -7,6 +8,8 @@ from .models import Previsao
 from django.forms import formset_factory
 from sklearn.preprocessing import StandardScaler
 from django.contrib.auth.decorators import login_required
+
+
 
 PrevisaoFormSet = formset_factory(DadosForm, extra=0)
 
@@ -22,12 +25,6 @@ def pre_processamento(dados):
 
     dados_normalizados = scaler.transform(dados)
     return dados_normalizados
-
-from django.shortcuts import render, get_object_or_404
-from .models import Previsao
-import numpy as np
-import pickle
-import os
 
 @login_required
 def prever_nova(request):
@@ -116,14 +113,15 @@ def prever_nova(request):
 def prever_atualizar(request, previsao_id):
     num_rows = int(request.POST.get('num_rows', 0))
     titulo = request.POST.get('titulo', '')
-    previsao = None 
+    previsao = None
+    scalerN = request.POST.get('ScalerN', '')
+    dados = []
 
     if previsao_id is not None:
         # Se um previsao_id foi fornecido, recupera a previsão existente
         previsao = get_object_or_404(Previsao, id=previsao_id, usuario=request.user)
 
     if request.method == 'POST':
-        dados = []
 
         # Preencha as listas com os valores dos campos
         for i in range(num_rows):
@@ -175,6 +173,7 @@ def prever_atualizar(request, previsao_id):
             previsao.resultados = resultados
             previsao.num_linhas = num_rows
             previsao.save()
+            
 
             return redirect('app_fertilex:prever_atualizar', previsao_id=previsao_id)
 
@@ -185,7 +184,9 @@ def prever_atualizar(request, previsao_id):
     # Recupera as previsões do usuário para exibição
     previsoes = Previsao.objects.filter(usuario=request.user)
     num_rows_list = range(num_rows)
-    return render(request, 'app_fertilex/previsao.html', {'num_rows': num_rows, 'previsao': previsao, 'previsoes': previsoes, 'num_rows_list': num_rows_list})
+
+    contexto = {'num_rows': num_rows, 'previsao': previsao, 'previsoes': previsoes, 'num_rows_list': num_rows_list, 'dados': dados}
+    return render(request, 'app_fertilex/previsao.html', contexto)
 
 def limpar_dados(request, previsao_id):
     # Recupera a previsão com base no ID fornecido
@@ -214,9 +215,20 @@ def limpar_dados(request, previsao_id):
 
 @login_required
 def resultados(request):
-    # Recupera todas as previsões do usuário logado
+    p = request.GET.get('p', '')
+
+    if p:
+        previsoes = Previsao.objects.filter(usuario=request.user, titulo__icontains=p)
+    
+    # Caso contrário, retorne todas as previsões do usuário
     previsoes = Previsao.objects.filter(usuario=request.user)
-    return render(request, 'app_fertilex/resultados.html', {'previsoes': previsoes})
+    
+    context = {
+        'previsoes': previsoes,
+        'query': p,
+    }
+    
+    return render(request, 'app_fertilex/resultados.html', context)
 
 @login_required
 def excluir_previsao(request, previsao_id):
@@ -228,3 +240,20 @@ def excluir_previsao(request, previsao_id):
             return redirect('app_fertilex:resultados')
     
     return render(request, 'app_fertilex/excluir_previsao.html', {'previsao': previsao})
+
+
+@login_required
+def pesquisar_previsao(request):
+    
+    if 'p' in request.GET:
+        p = request.GET['p']
+        previsoes = Previsao.objects.filter(usuario=request.user, titulo__icontains=p)
+    else:
+        # Caso contrário, retorne todas as previsões do usuário
+        previsoes = Previsao.objects.filter(usuario=request.user)
+
+    context = {
+        'previsoes': previsoes,
+    }
+
+    return render(request, 'app_fertilex/resultados.html', context)

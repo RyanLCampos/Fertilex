@@ -36,7 +36,7 @@
 </head>
 <body>
     <header class="bg-primary text-white text-center py-3">
-        <h1>Previsão de Dados</h1>
+        <h1>Visualizar Pedição</h1>
     </header>
     <div class="container mt-5">
         <a href="{% url 'app_fertilex:resultados' %}" class="btn btn-secondary mb-5">Voltar para a Lista de Previsões</a>
@@ -99,6 +99,13 @@
             </div>
         </form>
         {% endif %}
+        <h3>Opções Adicionais</h3>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ScalerN" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Standard Scaler
+            </label>
+        </div>
         <div>
             {% if previsao.resultados %}
                 <h3>{{ previsao.titulo }}</h3>
@@ -172,6 +179,7 @@
                 $('#formset-table tbody').empty(); // Remove todas as linhas da tabela
                 $('#num-rows').val(0); // Atualiza o valor do campo "Número de Linhas"
             });
+
         });
     </script>
 </body>

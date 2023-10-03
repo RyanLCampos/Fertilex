@@ -38,13 +38,13 @@
         <h1> Criar Analise </h1>
     </header>
     <div class="container mt-5">
-        <a href="{% url 'app_fertilex:resultados' %}" class="btn btn-secondary mb-5">Voltar para a Lista de Previsões</a>
+        <a href="{% url 'app_fertilex:resultados' %}" class="btn btn-secondary mb-5">Voltar para a Lista de Predições</a>
         <p class="mb-4 text-danger">Caso deixe um campo vazio, será considerado como '0'</p>
         <form method="post" action="{% url 'app_fertilex:prever_nova' %}">
             {% csrf_token %}
             <div class="mb-5">
-                <label for="titulo" class="form-label">Título da Previsão:</label>
-                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Digite o título da previsão" required>
+                <label for="titulo" class="form-label">Título:</label>
+                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Digite o título da predição" required>
             </div>
             <div class="mb-5">
                 <label for="num-rows" class="form-label">Número de Linhas:</label>
@@ -142,6 +142,13 @@
                 $('#num-rows').val(0); 
 
             });
+
+            $('#formset-table').on('input', 'input[type=number]', function () {
+                $(this).val($(this).val().replace(',', '.').replace('.', ','));
+            });
+
+
+            
         });
     </script>
 </body>

@@ -9,6 +9,7 @@ from django.urls import reverse
 def cadastrar(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        print(form.fields)
         if form.is_valid():
             user = form.save()
             login(request, user)

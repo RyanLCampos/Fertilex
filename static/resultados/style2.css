@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+body {
+    
+    background: rgb(9,121,61);
+    background: linear-gradient(170deg, rgba(9,121,61,1) 10%, rgba(38,145,76,1) 37%, rgba(95,193,105,1) 62%, rgba(145,255,0,1) 100%);
+    overflow: hidden;
+}
+
+header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: 'Work Sans', sans-serif;
+    color: rgb(255, 255, 255);
+    
+}
+
+header .titulo-fertilex{
+    margin-top: 2%;
+    font-family: 'Work Sans', sans-serif;
+    text-align: center;
+}
+
+header .perfil {
+    margin-top: 2.5%;
+}
+
+header .perfil a {
+    font-size: 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+header .div-logout {
+    margin-top: 1.5%;
+}
+
+header .div-logout .btn-logout {
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+
+
+.lista-previsoes{
+    list-style: none;
+}
+
+.item-lista{
+    color: black;
+    
+
+    font-size: 20px;
+    font-family: 'Work Sans', sans-serif;
+    margin-top: 20px;
+    height: 60px;
+
+    border-radius: 20px;
+    
+    
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.botoes {
+    display: flex;
+}
+
+.botoes a {
+    text-decoration: none;
+    font-size: 17px;
+    margin-left: 5px;
+    padding: 8px;
+    font-weight: 500;
+}
+
+.botoes .btn-atualizar {
+    color: white;
+    background-color: #118ab2;
+    border-radius: 20px;
+    border: 2px solid #118ab2;
+}
+
+.botoes .btn-atualizar:hover{
+    background-color: transparent;
+    color: #118ab2;
+    border: 2px solid #118ab2;
+    transition: ease-in .2s;   
+}
+
+.botoes .btn-excluir {
+    color: white;
+    background-color: #ef476f;
+    border-radius: 20px;
+    border: 2px solid #ef476f;
+}
+
+.botoes .btn-excluir:hover{
+    background-color: transparent;
+    color: #ef476f;
+    border: 2px solid #ef476f;
+    transition: ease-in .2s;   
+}
+
+.titulo-resultado{
+    background-color: white;
+    width: 100%;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    padding: 20px;
+
+    border-radius: 20px;
+}
