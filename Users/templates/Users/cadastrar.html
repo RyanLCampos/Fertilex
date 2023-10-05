@@ -18,8 +18,8 @@
             <form method="post" class="mx-auto">
                 {% csrf_token %}
                 <div class="form-input">
-                    <label for="{{ form.username.id_for_label }}">Username:</label><br>
-                    <input type="text" name="username" value="{{ form.username.value | default_if_none:'' }}" autofocus required>
+                    <label for="{{ form.email_address.id_for_label }}">email:</label><br>
+                    <input type="email" name="email_address" value="{{ form.email_address.value | default_if_none:'' }}" autofocus required>
                 </div>
                 <div class="form-input">
                     <label for="{{ form.password1.id_for_label }}">Senha:</label>
@@ -33,6 +33,14 @@
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
                 </div>
             </form>
+            <div class="alert">
+                {% if form.errors.email %}
+                    <span>{{ form.errors.email }}</span>
+                {% endif %}
+                {% if form.errors.password %}
+                    <span >{{ form.errors.password }}</span>
+                {% endif %}
+            </div>
             <div class="cadastro-login">
                 Já tem uma conta? <a href="{% url 'login' %}">Entrar</a>
             </div>

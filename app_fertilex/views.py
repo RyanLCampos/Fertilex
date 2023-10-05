@@ -200,17 +200,17 @@ def limpar_dados(request, previsao_id):
     # Redireciona de volta à página de previsão com os dados limpos
     return redirect('app_fertilex:prever_atualizar', previsao_id=previsao_id)
 
-def limpar_dados(request, previsao_id):
-    # Recupera a previsão com base no ID fornecido
-    previsao = get_object_or_404(Previsao, id=previsao_id, usuario=request.user)
+# def limpar_dados(request, previsao_id):
+#     # Recupera a previsão com base no ID fornecido
+#     previsao = get_object_or_404(Previsao, id=previsao_id, usuario=request.user)
 
-    # Limpa os dados da tabela e os resultados
-    previsao.dados_tabela = []
-    previsao.resultados = []
-    previsao.save()
+#     # Limpa os dados da tabela e os resultados
+#     previsao.dados_tabela = []
+#     previsao.resultados = []
+#     previsao.save()
 
-    # Redireciona de volta à página de previsão com os dados limpos
-    return redirect('app_fertilex:prever_atualizar', previsao_id=previsao_id)
+#     # Redireciona de volta à página de previsão com os dados limpos
+#     return redirect('app_fertilex:prever_atualizar', previsao_id=previsao_id)
     
 
 @login_required

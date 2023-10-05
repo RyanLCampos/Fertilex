@@ -12,6 +12,8 @@ body {
     overflow: hidden;
 }
 
+/* Cabecalho */
+
 header {
     display: flex;
     width: 100%;
@@ -23,14 +25,47 @@ header {
     
 }
 
-header .titulo-fertilex{
+.cabecalho {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+/* Nome do Sistema */
+
+header .titulo-fertilex {
     margin-top: 2%;
+    padding-right: 7%;
+}
+
+header .titulo-fertilex a{
+    
+    text-decoration: none;
+    font-size: 45px;
+    font-weight: 500;
+    color: azure;
     font-family: 'Work Sans', sans-serif;
     text-align: center;
+    padding: 25px;
 }
+
+
+header .titulo-fertilex a:hover{
+    color: #ccff33;
+    font-size: 45px;
+    transition: ease-in .4s;
+}
+
+/* Perfil */
 
 header .perfil {
     margin-top: 2.5%;
+    display: flex;
+    align-items: center;
 }
 
 header .perfil a {
@@ -39,8 +74,38 @@ header .perfil a {
     color: rgb(255, 255, 255);
 }
 
+header .perfil a:hover {
+    font-size: 20px;
+    text-decoration: none;
+    color: #ccff33;
+    font-weight: 500;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+
+/* Logout */
+
 header .div-logout {
     margin-top: 1.5%;
+}
+
+
+header .div-logout a:hover {
+    color: #ef476f;
+    transition: ease-in .2s;
+    font-weight: 500;
 }
 
 header .div-logout .btn-logout {
@@ -49,6 +114,86 @@ header .div-logout .btn-logout {
     color: rgb(255, 255, 255);
 }
 
+/* Bem vindo */
+
+.div-bemvindo {
+    display: flex;
+    width: 80%;
+    margin-left: 16%;
+    margin-top: 3%;
+}
+
+.bem-vindo {
+    font-family: 'Work Sans', sans-serif;
+    color: #ccff33;
+    font-size: 35px;
+    margin-bottom: 50px;
+    text-align: start;
+}
+
+/* Conteudo */
+
+.conteudo {
+    width: 70%;
+    height: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.conteudo-tudo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Pesquisa */
+
+form {
+    width: 80%;
+}
+
+.input-class {
+    width: 100%;
+    margin-bottom: 34px;
+    
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.input-group input {
+    width: 50%;
+    outline: none;
+    border-radius: 50px;
+    padding: 10px;
+    border: 2px solid #2b9348;
+}
+
+:not(.default)::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.input-group button {
+    border-radius: 20px;
+    border: 2px solid #118ab2;
+    background-color: #118ab2;
+    color: #f9f9f9;
+}
+
+
+.nao-encontrado {
+    text-align: center;
+    font-size: 20px;
+    font-family: 'Work Sans', sans-serif;
+    color: #2b9348;
+}
+
+/* Lista */
 
 .lista-previsoes{
     list-style: none;
@@ -62,8 +207,10 @@ header .div-logout .btn-logout {
     font-family: 'Work Sans', sans-serif;
     margin-top: 20px;
     height: 60px;
+    padding-bottom: 20px;
 
-    border-radius: 20px;
+   
+    border-bottom: 2px solid #7d827e5b;
     
     
 
@@ -121,4 +268,32 @@ header .div-logout .btn-logout {
     padding: 20px;
 
     border-radius: 20px;
+}
+
+/* Botão Criar */
+
+.div-criar {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 10px;
+}
+
+.div-criar a{
+    color: #f9f9f9;
+    text-decoration: none;
+    font-family: 'Work Sans', sans-serif;
+
+    width: 100%;
+    border-radius: 20px;
+    background-color: #2b9348;
+    border: 2px solid #2b9348;
+    padding: 8px;
+}
+
+.div-criar a:hover {
+    transition: ease-in .3s;
+    color: #2b9348;
+    font-weight: 500;
+    background-color: transparent;
+    border: 2px solid #2b9348;
 }
