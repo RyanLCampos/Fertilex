@@ -17,8 +17,8 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="form-input">
-                    <label for="{{ form.email.id_for_label }}">Email:</label><br>
-                    <input type="email" name="email" value="{{ form.email.value | default_if_none:'' }}" autofocus>
+                    <label for="{{ form.username.id_for_label }}">Username:</label><br>
+                    <input type="username" name="username" value="{{ form.username.value | default_if_none:'' }}" autofocus>
                 </div>
                 <div class="form-input">
                     <label for="{{ form.password.id_for_label }}">Senha:</label><br>
