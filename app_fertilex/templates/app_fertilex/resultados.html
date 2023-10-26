@@ -15,13 +15,13 @@
                 <div class="avatar">
                     <img src="{{ user.perfil.imagem.url }}">
                 </div>
-                <a href="#" class="btn-perfil">{{ user.username }}</a>
+                <a href="{% url 'Users:perfil' %}" class="btn-perfil">{{ user.first_name }}</a>
             </div>
             <div class="titulo-fertilex">
                 <a href="">Fertilex</a>
             </div>
             <div class="div-logout">
-                <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
+                <a href="{% url 'Users:logout' %}" class="btn-logout">Sair</a>
             </div>
         </div>
     </header>

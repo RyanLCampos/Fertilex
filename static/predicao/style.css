@@ -1,0 +1,361 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+
+body {
+    
+    background: rgb(9,121,61);
+    background: linear-gradient(170deg, rgba(9,121,61,1) 10%, rgba(38,145,76,1) 37%, rgba(95,193,105,1) 62%, rgba(145,255,0,1) 100%);
+    
+}
+
+/* Cabecalho */
+
+header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: 'Work Sans', sans-serif;
+    color: rgb(255, 255, 255);
+    
+}
+
+.cabecalho {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+/* Nome do Sistema */
+
+header .titulo-fertilex {
+    margin-top: 2%;
+}
+
+header .titulo-fertilex a{
+    
+    text-decoration: none;
+    font-size: 45px;
+    font-weight: 500;
+    color: azure;
+    font-family: 'Work Sans', sans-serif;
+    text-align: center;
+    padding: 25px;
+}
+
+
+header .titulo-fertilex a:hover{
+    color: #ccff33;
+    font-size: 45px;
+    transition: ease-in .4s;
+}
+
+/* Perfil */
+
+header .perfil {
+    margin-top: 2.5%;
+    display: flex;
+    align-items: center;
+}
+
+header .perfil a {
+    font-size: 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+header .perfil a:hover {
+    font-size: 20px;
+    text-decoration: none;
+    color: #ccff33;
+    font-weight: 500;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+
+/* Logout */
+
+header .div-logout {
+    margin-top: 1.5%;
+}
+
+
+header .div-logout a:hover {
+    color: #ef476f;
+    transition: ease-in .2s;
+    font-weight: 500;
+}
+
+header .div-logout .btn-logout {
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+
+
+/* Titulo */
+
+.div-criar-predicao {
+    text-align: center;
+    display: flex;
+    justify-content:space-between;
+    padding: 0;
+    padding-right:33%;
+    padding-left: 3%;
+    width: 75%;
+    margin-left: 16%;
+    margin-top: 3%;
+    margin-bottom: 50px;
+}
+
+.criar-predicao {
+    font-family: 'Work Sans', sans-serif;
+    color: #ccff33;
+    font-size: 35px;
+    text-align: center;
+}
+
+/* Botao Voltar */
+
+.btn-voltar {
+    color:azure;
+    text-decoration: none;
+
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.btn-voltar:hover{
+    color: #ccff33;
+    transition: ease-in .3s;
+}
+
+/* Conteudo */
+
+.conteudo {
+    width: 70%;
+    height: 100%;
+    padding: 20px;
+    /* background-color: #f9f8f8; */
+    border-radius: 20px;
+    margin-bottom: 100px;
+}
+
+.conteudo-tudo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Aviso */
+
+.aviso {
+    font-family: 'Work Sans', sans-serif;
+    color: #ccff33;
+    font-weight: 500;
+}
+
+/* Inputs */
+
+.div-inputs {
+    display: flex;
+    justify-content: center; 
+}
+
+.conteudo-inputs {
+    width: 50%;
+    margin-bottom: 50px;
+}
+
+/* Inputs - Titulo */
+
+.div-titulo {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.input-titulo, .input-numrows {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 20px;
+    color: azure;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Tabela */
+
+.div-tabela {
+    width: 100%;
+    max-height: 300px; /* Defina a altura desejada em pixels ou porcentagem */
+    overflow-x: auto; /* Adiciona barras de rolagem horizontal quando necessário */
+    overflow-y: auto; /* Adiciona barras de rolagem vertical quando necessário */
+    margin: 0 auto; /* Centraliza a div horizontalmente */
+}
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse; /* Remove a separação entre as células */
+}
+
+.table-categorias th{
+    background-color: transparent;
+    color: #f9f8f8;
+    border-radius: 100px;
+    padding: 8px;
+    text-align: center;
+    width: 3px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.tabela-inputs input {
+    outline: none;
+    border: 1px solid #2b9348;
+    border-radius: 20px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+ 
+td {
+    width: 6%;
+}
+
+
+.id-coluna {
+    background-color: transparent;
+    border-radius: 100px;
+    padding: 8px;
+    text-align: center;
+    font-weight: 500;
+    color: #f9f8f8;
+}
+
+.tabela-inputs td:last-child {
+    text-align: center; /* Centraliza o conteúdo da última célula na tabela de ação */
+}
+
+
+/* Arrumando Scrollbar */
+
+::-webkit-scrollbar {
+    width: 1em;
+}
+
+body::-webkit-scrollbar-track {
+    min-height: 100%;
+    min-width: 100%;
+    background: rgb(9,121,61);
+    background: linear-gradient(170deg, rgba(9,121,61,1) 10%, rgba(38,145,76,1) 37%, rgba(95,193,105,1) 62%, rgba(145,255,0,1) 100%);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #2b9348;
+    border-radius: 50px;
+}
+
+.div-tabela::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.div-tabela::-webkit-scrollbar-corner {
+    /*
+    background-image: url(imagens/canto-scrollbar.png);
+    background-repeat: no-repeat;
+    */
+    background: transparent;
+}
+
+
+/* Botoes */
+
+.div-botoes {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.btn-adicionar {
+    color: white;
+    padding: 6px;
+    background-color: #118ab2;
+    border-radius: 20px;
+    width: 10%;
+    border: 2px solid #118ab2;
+}
+
+.btn-adicionar:hover{
+    background-color: transparent;
+    color: #118ab2;
+    border: 2px solid #118ab2;
+    transition: ease-in .2s;   
+}
+
+.btn-criar {
+    color: white;
+    background-color: #2b9348;
+    border-radius: 20px;
+    padding: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 10%;
+    border: 2px solid #2b9348;
+}
+
+.btn-limpar {
+    color: white;
+    background-color: #ef476f;
+    border-radius: 20px;
+    padding: 6px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 10%;
+    border: 2px solid #ef476f;
+}
+
+.btn-limpar:hover{
+    background-color: transparent;
+    color: #ef476f;
+    border: 2px solid #ef476f;
+    transition: ease-in .2s;  
+}
+
+.btn-delete {
+    color: white;
+    background-color: #ef476f;
+    border-radius: 20px;
+    padding: 6px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width:80%;
+    border: 2px solid #ef476f;
+}
+
+.btn-delete:hover {
+    background-color: transparent;
+    color: #ef476f;
+    border: 2px solid #ef476f;
+    transition: ease-in .2s;  
+}

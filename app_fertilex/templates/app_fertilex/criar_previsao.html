@@ -6,34 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Análise</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'criar_predicao/style.css' %}">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .table-responsive {
-            max-height: 400px;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-
-        .delete-row-btn {
-            padding: 0.2rem 0.5rem;
-        }
-
-        .delete-row-btn:hover {
-            background-color: #dc3545;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'predicao/style.css' %}">
 </head>
 <body>
     <header>
@@ -42,13 +15,13 @@
                 <div class="avatar">
                     <img src="{{ user.perfil.imagem.url }}">
                 </div>
-                <a href="#" class="btn-perfil">{{ user.username }}</a>
+                <a href="#" class="btn-perfil">{{ user.first_name }}</a>
             </div>
             <div class="titulo-fertilex">
                 <a href="">Fertilex</a>
             </div>
             <div class="div-logout">
-                <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
+                <a href="{% url 'Users:logout' %}" class="btn-logout">Sair</a>
             </div>
         </div>
     </header>
@@ -81,19 +54,19 @@
                         <table class="tabela" id="formset-table">
                             <thead class="table-categorias">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>N</th>
-                                    <th>P</th>
-                                    <th>K</th>
-                                    <th>pH</th>
-                                    <th>EC</th>
-                                    <th>OC</th>
-                                    <th>S</th>
-                                    <th>Zn</th>
-                                    <th>Fe</th>
-                                    <th>Cu</th>
-                                    <th>Mn</th>
-                                    <th>Ação</th>
+                                    <th data-coluna="ID">ID</th>
+                                    <th data-coluna="N">N</th>
+                                    <th data-coluna="P">P</th>
+                                    <th data-coluna="K">K</th>
+                                    <th data-coluna="pH">pH</th>
+                                    <th data-coluna="EC">EC</th>
+                                    <th data-coluna="OC">OC</th>
+                                    <th data-coluna="S">S</th>
+                                    <th data-coluna="Zn">Zn</th>
+                                    <th data-coluna="Fe">Fe</th>
+                                    <th data-coluna="Cu">Cu</th>
+                                    <th data-coluna="Mn">Mn</th>
+                                    <th data-coluna="Ação">Ação</th>
                                 </tr>
                             </thead>
                             <tbody class="tabela-inputs">
@@ -101,12 +74,46 @@
                             </tbody>
                         </table>
                     </div>
+                    <div>
+                        <h3>Opções Pré-processamento </h3>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="ScalerNP" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Standard Scaler
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="smote" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Smote
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Escolha as Colunas</h3>
+                        <div>
+                            </div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="colunas_selecionadas" value="default" id="defaultCheckbox" checked>
+                                <label class="form-check-label">
+                                    Default
+                                </label>
+                            </div>
+                            
+                            {% for coluna in colunas %}
+                                <div class="form-check">
+                                    <input class="form-check-input colunaSelecionada" type="checkbox" name="colunas_selecionadas" value="{{ coluna }}" id="colunaSelecionada" hidden>
+                                    <label class="form-check-label colunaSelecionada" hidden>
+                                        Utilizar Coluna {{ coluna }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                     <div class="div-botoes">
                         <button type="button" id="add-row" class="btn-adicionar">Adicionar Linha</button>
                         <button type="submit" class="btn-criar">Criar</button>
                         <button type="button" id="limpar-form" class="btn-limpar">Limpar</button>
                     </div>
-                
                 </div>
             </div>
         </form>
@@ -120,19 +127,19 @@
             function addRow() {
                 nextID++;
                 var newRow = '<tr>' +
-                    '<td class="id-coluna" ">' + nextID + '</td>' +
-                    '<td><input type="number" name="N[]" step="any"></td>' +
-                    '<td><input type="number" name="P[]" step="any"></td>' +
-                    '<td><input type="number" name="K[]" step="any"></td>' +
-                    '<td><input type="number" name="pH[]" step="any"></td>' +
-                    '<td><input type="number" name="EC[]" step="any"></td>' +
-                    '<td><input type="number" name="OC[]" step="any"></td>' +
-                    '<td><input type="number" name="S[]" step="any"></td>' +
-                    '<td><input type="number" name="Zn[]" step="any"></td>' +
-                    '<td><input type="number" name="Fe[]" step="any"></td>' +
-                    '<td><input type="number" name="Cu[]" step="any"></td>' +
-                    '<td><input type="number" name="Mn[]" step="any"></td>' +
-                    '<td><button type="button" class="btn-delete" data-index="{{ forloop.counter0 }}">Excluir</button></td>' +
+                    '<td class="id-coluna" data-coluna="ID"">' + nextID + '</td>' +
+                    '<td data-coluna="N"><input type="number" name="N[]" step="any" data-coluna="N"></td>' +
+                    '<td data-coluna="P"><input type="number" name="P[]" step="any" data-coluna="P"></td>' +
+                    '<td data-coluna="K"><input type="number" name="K[]" step="any" data-coluna="K"></td>' +
+                    '<td data-coluna="pH"><input type="number" name="pH[]" step="any" data-coluna="pH"></td>' +
+                    '<td data-coluna="EC"><input type="number" name="EC[]" step="any" data-coluna="EC"></td>' +
+                    '<td data-coluna="OC"><input type="number" name="OC[]" step="any" data-coluna="OC"></td>' +
+                    '<td data-coluna="S"><input type="number" name="S[]" step="any" data-coluna="S"></td>' +
+                    '<td data-coluna="Zn"><input type="number" name="Zn[]" step="any" data-coluna="Zn"></td>' +
+                    '<td data-coluna="Fe"><input type="number" name="Fe[]" step="any" data-coluna="Fe"></td>' +
+                    '<td data-coluna="Cu"><input type="number" name="Cu[]" step="any" data-coluna="Cu"></td>' +
+                    '<td data-coluna="Mn"><input type="number" name="Mn[]" step="any" data-coluna="Mn"></td>' +
+                    '<td data-coluna="Ação"><button type="button" class="btn-delete" data-index="{{ forloop.counter0 }}">Excluir</button></td>' +
                     '</tr>';
                 $('#formset-table tbody').append(newRow);
                 
@@ -173,12 +180,49 @@
 
             });
 
-            $('#formset-table').on('input', 'input[type=number]', function () {
-                $(this).val($(this).val().replace(',', '.').replace('.', ','));
+            
+            $("#defaultCheckbox").change(function() {
+                var isChecked = $(this).prop("checked");
+                $(".colunaSelecionada").prop("hidden", isChecked);
             });
 
+            function atualizarColunas() {
+                
+                // Verifica se a opção "Default" está marcada
+                var isDefaultChecked = $('#defaultCheckbox').is(':checked');
 
-            
+                if (isDefaultChecked) {
+                    // Se "Default" está marcado, mostrar todas as colunas
+                    $('th, td').show();
+                } else {
+                    // Se "Default" não está marcado, mostrar/ocultar com base nas seleções
+                    $('input[name="colunas_selecionadas"]:checked').each(function () {
+                        var colunaSelecionada = $(this).val();
+                        $('th[data-coluna="' + colunaSelecionada + '"]').show();
+                        $('td[data-coluna="' + colunaSelecionada + '"]').show();
+                    });
+
+                    $('input[name="colunas_selecionadas"]:not(:checked)').each(function () {
+                        var colunaSelecionada = $(this).val();
+                        $('th[data-coluna="' + colunaSelecionada + '"]').hide();
+                        $('td[data-coluna="' + colunaSelecionada + '"]').hide();
+                    });
+                }
+            }
+
+            // Ação quando o checkbox é alterado
+            $('input[name="colunas_selecionadas"]').change(function () {
+                atualizarColunas();
+            });
+
+            // Ação quando o checkbox "Default" é alterado
+            $('#defaultCheckbox').change(function () {
+                atualizarColunas();
+            });
+
+            // Atualizar as colunas ao carregar a página
+            atualizarColunas();
+          
         });
     </script>
 </body>

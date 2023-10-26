@@ -9,7 +9,7 @@ body {
     
     background: rgb(9,121,61);
     background: linear-gradient(170deg, rgba(9,121,61,1) 10%, rgba(38,145,76,1) 37%, rgba(95,193,105,1) 62%, rgba(145,255,0,1) 100%);
-    overflow: hidden;
+    overflow:auto;
 }
 
 /* Cabecalho */
@@ -146,6 +146,7 @@ header .div-logout .btn-logout {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 2%;
 }
 
 /* Pesquisa */

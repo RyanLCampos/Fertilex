@@ -1,24 +1,24 @@
 import pickle
 import os
 import locale
+from django.http import HttpResponse
 import numpy as np
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import DadosForm
-from .models import Previsao
+from .models import Previsao, ConfiguracaoPrevisao
 from django.forms import formset_factory
 from sklearn.preprocessing import StandardScaler
 from django.contrib.auth.decorators import login_required
+from .Modelo.model_ml import treinar_modelo
+import pandas as pd
 
 
-
-PrevisaoFormSet = formset_factory(DadosForm, extra=0)
-
-def pre_processamento(dados):
-    # Aplicar o pré-processamento aos dados de entrada
-
+def realizar_scaler(dados):
     script_dir = os.path.dirname(__file__)
 
-    scaler_path = os.path.join(script_dir, '../Model e data/scaler.sav')
+    if isinstance(dados[0], dict):
+        dados = [list(item.values()) for item in dados]
+
+    scaler_path = os.path.join(script_dir, './Modelo/scaler.sav')
 
     with open(scaler_path, 'rb') as arquivo_scaler:
         scaler = pickle.load(arquivo_scaler)
@@ -30,37 +30,58 @@ def pre_processamento(dados):
 def prever_nova(request):
     num_rows = int(request.POST.get('num_rows', 0))
     titulo = request.POST.get('titulo', '')
+    scalerNP = request.POST.get('ScalerNP', '')
+    smote = request.POST.get('smote', '')
     previsao = None
+    colunas = ["N", "P", "K", "pH", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn"]
 
     if request.method == 'POST':
         dados = []
+        colunas_selecionadas = request.POST.getlist('colunas_selecionadas')
+        print(colunas_selecionadas) # Teste
 
-        # Preenche as listas com os valores dos campos
+        if "default" in colunas_selecionadas:
+            colunas_selecionadas = ["N", "P", "K", "pH", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn"]
+
         for i in range(num_rows):
-            row = [
-                float(request.POST.getlist(f'N[]')[i] or 0),  # Trata campos nulos como 0
-                float(request.POST.getlist(f'P[]')[i] or 0),
-                float(request.POST.getlist(f'K[]')[i] or 0),
-                float(request.POST.getlist(f'pH[]')[i] or 0),
-                float(request.POST.getlist(f'EC[]')[i] or 0),
-                float(request.POST.getlist(f'OC[]')[i] or 0),
-                float(request.POST.getlist(f'S[]')[i] or 0),
-                float(request.POST.getlist(f'Zn[]')[i] or 0),
-                float(request.POST.getlist(f'Fe[]')[i] or 0),
-                float(request.POST.getlist(f'Cu[]')[i] or 0),
-                float(request.POST.getlist(f'Mn[]')[i] or 0)
-            ]
+            row = {}
+            for col in colunas_selecionadas:
+                valor = float(request.POST.getlist(f'{col}[]')[i] or 0)
+                row[col] = valor
             dados.append(row)
 
-        dados_preprocessados = [pre_processamento([linha]) for linha in dados]
-        dados_preprocessados = np.array(dados_preprocessados)
+        print(dados) # Teste
         
-        modelo_path = os.path.join(os.path.dirname(__file__), '../Model e data/modelo_ml.sav')
+        # Chama a função treinar_modelo passando a solicitação e a opção de scaler
+        treinar_modelo(colunas_selecionadas, smote)
+        dados_df = pd.DataFrame(dados, columns=colunas_selecionadas)
+
+        if scalerNP != '':
+            script_dir = os.path.dirname(__file__)
+            scaler_path = os.path.join(script_dir, './Modelo/scaler.sav')
+
+            with open(scaler_path, 'rb') as arquivo_scaler:
+                scaler = pickle.load(arquivo_scaler)
+
+            dados_preprocessados = scaler.transform(dados_df)
+        else:
+            dados_preprocessados = dados_df.values
+            
+
+        
+        print("Dados Processados", dados_preprocessados) # Teste
+        scalerNP = scalerNP.lower() == 'on'
+        smote = smote.lower() == 'on'
+        print("Smote: ", smote) # Teste
+        print("Scaler: ", scalerNP) # Teste
+
+        modelo_path = os.path.join(os.path.dirname(__file__), './Modelo/modelo_ml.sav')
         
         with open(modelo_path, 'rb') as modelo_arquivo:
             modelo = pickle.load(modelo_arquivo)
 
-        resultados_modelo = [modelo.predict(linha.reshape(1, -1)) for linha in dados_preprocessados]
+        resultados_modelo = [modelo.predict(np.array(linha).reshape(1, -1)) for linha in dados_preprocessados]
+
 
         # Cria uma nova lista de resultados para esta previsão
         resultados = []
@@ -82,18 +103,23 @@ def prever_nova(request):
             # Atualiza a previsão existente se previsao_id for fornecido
             previsao.usuario = usuario
             previsao.titulo = titulo
-            previsao.dados_tabela = dados
+            previsao.dados_tabela = dados_df.to_dict(orient='records')
             previsao.resultados = resultados
-            previsao.num_linhas = num_rows
+            previsao.configuracao.num_linhas = num_rows
+            previsao.configuracao.standard_scaler = scalerNP
+            previsao.configuracao.smote = smote
+            previsao.configuracao.colunas_selecionadas = colunas_selecionadas
+            previsao.configuracao.save()
             previsao.save()
         else:
             # Cria uma nova previsão se previsao_id não for fornecido
+            configuracao = ConfiguracaoPrevisao.objects.create(num_linhas=num_rows, standard_scaler=scalerNP, smote=smote, colunas_selecionadas=colunas_selecionadas)
             previsao = Previsao(
                 usuario=usuario,
                 titulo=titulo,
-                dados_tabela=dados,
+                dados_tabela=dados_df.to_dict(orient='records'),
                 resultados=resultados,
-                num_linhas=num_rows
+                configuracao=configuracao
             )
             previsao.save()
 
@@ -103,19 +129,25 @@ def prever_nova(request):
             # Redireciona o usuário para a página de previsão da nova previsão
             return redirect('app_fertilex:prever_atualizar', previsao_id=nova_previsao_id)
 
-
     # Recupera as previsões do usuário para exibição
     previsoes = Previsao.objects.filter(usuario=request.user)
 
-    return render(request, 'app_fertilex/criar_previsao.html', {'num_rows': num_rows, 'previsao': previsao, 'previsoes': previsoes})
+    return render(request, 'app_fertilex/criar_previsao.html', {'num_rows': num_rows, 'previsao': previsao, 'previsoes': previsoes, 'colunas': colunas})
 
 @login_required
 def prever_atualizar(request, previsao_id):
     num_rows = int(request.POST.get('num_rows', 0))
     titulo = request.POST.get('titulo', '')
     previsao = None
-    scalerN = request.POST.get('ScalerN', '')
+    scalerNP = request.POST.get('ScalerNP', '')
+    smote = request.POST.get('smote', '')
+    colunas = ["N", "P", "K", "pH", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn"]
     dados = []
+
+    colunas_selecionadas = request.POST.getlist('colunas_selecionadas')
+
+    if "default" in colunas_selecionadas:
+        colunas_selecionadas = ["N", "P", "K", "pH", "EC", "OC", "S", "Zn", "Fe", "Cu", "Mn"]
 
     if previsao_id is not None:
         # Se um previsao_id foi fornecido, recupera a previsão existente
@@ -125,30 +157,46 @@ def prever_atualizar(request, previsao_id):
 
         # Preencha as listas com os valores dos campos
         for i in range(num_rows):
-            row = [
-                float(request.POST.getlist(f'N[]')[i] or 0),  # Trata campos nulos como 0
-                float(request.POST.getlist(f'P[]')[i] or 0),
-                float(request.POST.getlist(f'K[]')[i] or 0),
-                float(request.POST.getlist(f'pH[]')[i] or 0),
-                float(request.POST.getlist(f'EC[]')[i] or 0),
-                float(request.POST.getlist(f'OC[]')[i] or 0),
-                float(request.POST.getlist(f'S[]')[i] or 0),
-                float(request.POST.getlist(f'Zn[]')[i] or 0),
-                float(request.POST.getlist(f'Fe[]')[i] or 0),
-                float(request.POST.getlist(f'Cu[]')[i] or 0),
-                float(request.POST.getlist(f'Mn[]')[i] or 0)
-            ]
+            row = {}
+            for col in colunas_selecionadas:
+                values = request.POST.getlist(f'{col}[]')
+                
+                # Verifica se o índice é válido antes de acessar a lista
+                if i < len(values):
+                    valor = float(values[i] or 0)
+                    row[col] = valor
+                else:
+                    row[col] = 0  # Ou qualquer valor padrão desejado se o índice não for válido
+
             dados.append(row)
 
-        dados_preprocessados = [pre_processamento([linha]) for linha in dados]
-        dados_preprocessados = np.array(dados_preprocessados)
+        # Chama a função treinar_modelo passando a solicitação e a opção de scaler
+        treinar_modelo(colunas_selecionadas, smote)
+        dados_df = pd.DataFrame(dados, columns=colunas_selecionadas)
+
+        if scalerNP != '':
+            script_dir = os.path.dirname(__file__)
+            scaler_path = os.path.join(script_dir, './Modelo/scaler.sav')
+
+            with open(scaler_path, 'rb') as arquivo_scaler:
+                scaler = pickle.load(arquivo_scaler)
+                
+            dados_preprocessados = scaler.transform(dados_df)
+        else:
+            dados_preprocessados = dados
+
         
-        modelo_path = os.path.join(os.path.dirname(__file__), '../Model e data/modelo_ml.sav')
+        scalerNP = scalerNP.lower() == 'on'
+        smote = smote.lower() == 'on'
+        print("Smote: ", smote)
+
+        modelo_path = os.path.join(os.path.dirname(__file__), './Modelo/modelo_ml.sav')
         
         with open(modelo_path, 'rb') as modelo_arquivo:
             modelo = pickle.load(modelo_arquivo)
-
-        resultados_modelo = [modelo.predict(linha.reshape(1, -1)) for linha in dados_preprocessados]
+            
+        dados_preprocessados = [list(linha.values()) if isinstance(linha, dict) else linha for linha in dados_preprocessados]
+        resultados_modelo = [modelo.predict(np.array(linha).reshape(1, -1)) for linha in dados_preprocessados]
 
         resultados = []  # Cria uma nova lista de resultados para esta previsão
 
@@ -164,6 +212,7 @@ def prever_atualizar(request, previsao_id):
             resultados.append(resultado_legivel)
 
         usuario = request.user  # Obtém o usuário logado
+        print(scalerNP)
 
         if previsao is not None:
             # Atualiza a previsão existente se previsao_id for fornecido
@@ -171,7 +220,11 @@ def prever_atualizar(request, previsao_id):
             previsao.titulo = titulo
             previsao.dados_tabela = dados
             previsao.resultados = resultados
-            previsao.num_linhas = num_rows
+            previsao.configuracao.num_linhas = num_rows
+            previsao.configuracao.standard_scaler = scalerNP
+            previsao.configuracao.smote = smote
+            previsao.configuracao.colunas_selecionadas = colunas_selecionadas
+            previsao.configuracao.save()
             previsao.save()
             
 
@@ -185,7 +238,18 @@ def prever_atualizar(request, previsao_id):
     previsoes = Previsao.objects.filter(usuario=request.user)
     num_rows_list = range(num_rows)
 
-    contexto = {'num_rows': num_rows, 'previsao': previsao, 'previsoes': previsoes, 'num_rows_list': num_rows_list, 'dados': dados}
+    contexto = {
+        'num_rows': previsao.configuracao.num_linhas, 
+        'previsao': previsao, 
+        'previsoes': previsoes, 
+        'num_rows_list': num_rows_list, 
+        'dados': previsao.dados_tabela,
+        'scaler_checked': previsao.configuracao.standard_scaler,
+        'smote_checked': previsao.configuracao.smote,
+        'colunas_selecionadas': previsao.configuracao.colunas_selecionadas,
+        'colunas': colunas
+    }
+    
     return render(request, 'app_fertilex/previsao.html', contexto)
 
 def limpar_dados(request, previsao_id):
@@ -237,7 +301,9 @@ def excluir_previsao(request, previsao_id):
     if request.method == 'POST':
         if previsao.usuario == request.user:
             previsao.delete()
-            return redirect('app_fertilex:resultados')
+            if previsao.configuracao:
+                previsao.configuracao.delete()
+                return redirect('app_fertilex:resultados')
     
     return render(request, 'app_fertilex/excluir_previsao.html', {'previsao': previsao})
 

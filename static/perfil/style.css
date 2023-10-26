@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+body {
+    
+    background: rgb(9,121,61);
+    background: linear-gradient(170deg, rgba(9,121,61,1) 10%, rgba(38,145,76,1) 37%, rgba(95,193,105,1) 62%, rgba(145,255,0,1) 100%);
+}
+
+/* Cabecalho */
+
+header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: 'Work Sans', sans-serif;
+    color: rgb(255, 255, 255);
+    
+}
+
+.cabecalho {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+/* Nome do Sistema */
+
+header .titulo-fertilex {
+    margin-top: 2%;
+    padding-right: 7%;
+}
+
+header .titulo-fertilex a{
+    
+    text-decoration: none;
+    font-size: 45px;
+    font-weight: 500;
+    color: azure;
+    font-family: 'Work Sans', sans-serif;
+    text-align: center;
+    padding: 25px;
+}
+
+
+header .titulo-fertilex a:hover{
+    color: #ccff33;
+    font-size: 45px;
+    transition: ease-in .4s;
+}
+
+/* Botão Voltar */
+
+header .voltar-btn {
+    margin-top: 2.5%;
+    display: flex;
+    align-items: center;
+    margin-left: 4.3%;
+}
+
+header .voltar-btn a {
+    font-size: 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+header .voltar-btn a:hover {
+    font-size: 20px;
+    text-decoration: none;
+    color: #ccff33;
+    font-weight: 500;
+}
+
+/* Logout */
+
+header .div-logout {
+    margin-top: 1.5%;
+}
+
+
+header .div-logout a:hover {
+    color: #ef476f;
+    transition: ease-in .2s;
+    font-weight: 500;
+}
+
+header .div-logout .btn-logout {
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+
+/* Titulo - Informações do Perfil */
+
+.div-titulo-perfil {
+    display: flex;
+    width: 100%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo-perfil {
+    font-family: 'Work Sans', sans-serif;
+    color: #09793d;
+    font-size: 35px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Imagem Perfil */
+
+.avatar {
+    margin-top: 2%;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+
+/* Conteudo */
+
+.conteudo {
+    width: 70%;
+    height: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 5%;
+}
+
+.conteudo-tudo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Formulario */
+
+.conteudo form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    width: 100%;
+}
+
+.conteudo .form-input {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    align-content: center;
+
+    margin-bottom: 20px;
+}
+
+.conteudo .form-input-imagem {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    align-content: center;
+
+    margin-bottom: 20px;
+}
+
+/* Formulario - Input Imagem */
+input[type="file"]{
+    display: none;
+}
+
+.form-input-imagem label {
+    color: #f8f9fa;
+    height: 40px;
+    width: 250px;
+    background-color: #09793d;
+    border: 2px solid #09793d;
+    margin: auto;
+    font-family: 'Work Sans', sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.form-input-imagem label:hover {
+    border: 2px solid #09793d;
+    background-color: transparent;
+    color: #09793d;
+}
+
+/* Formulario - Inputs */
+.conteudo input {
+   width: 70%;
+   border: 3px solid #dee2e6;
+   border-radius: 20px;
+   margin-top: 5px;
+   padding-top: 5px;
+   padding-left: 10px;
+
+   outline: none;
+   font-size: 18px;
+   color: #343a40;
+
+   background-color: #f8f9fa;
+}
+
+.conteudo input:focus{
+    transition: ease-in .3s;
+    border: 3px solid #09793daf;
+}
+
+label {
+    color: #09793d;
+    font-weight: 500;
+    font-size: 18px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+
+/* Botão Criar */
+
+.div-criar {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.div-criar button{
+    color: #f9f9f9;
+    text-decoration: none;
+    font-family: 'Work Sans', sans-serif;
+
+    width: 20%;
+    border-radius: 20px;
+    background-color: #219ebc;
+    border: 2px solid #219ebc;
+    padding: 8px;
+}
+
+.div-criar button:hover {
+    transition: ease-in .3s;
+    color: #219ebc;
+    font-weight: 500;
+    background-color: transparent;
+    border: 2px solid #219ebc;
+}
